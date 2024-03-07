@@ -6,7 +6,7 @@ import {AiOutlineShoppingCart} from "react-icons/ai";
 export default function TopMenu(){
 
     return(
-        <>
+        
             <div id="TopMenu" className ="border-b">
                 <div className="flex items-center justify-between w-full mx-auto max-w-[1200px]">
                     <ul id="TopMenuLeft" className="flex items-cetner text-[11px] text-[#333333] px-2 h-8">
@@ -49,22 +49,28 @@ export default function TopMenu(){
                             Help & Contact
                         </li>
                     </ul>
-
+                    {/*Right side of the top menu, right of the search bar */}
                     <ul id="TopMenuRight" className="flex items-center text-[11px] text-[#333333] px-2 h-8">
+                        {/*Spartan Logo (totally optional, can remove) */}
                         <li className="flex items-center gap-2 px-3 hover:underline cursor-pointer">
                             <img width={32} src="https://upload.wikimedia.org/wikipedia/en/thumb/e/ec/San_Jose_State_Spartans_logo.svg/1200px-San_Jose_State_Spartans_logo.svg.png"/>
                         </li>
-
+                        {/*Shopping Cart symbol  */}
                         <li className="flex items-center gap-2 px-3 hover:underline cursor-pointer">
                             <div className="relative">
                                 <AiOutlineShoppingCart size={22}/>
+                                <div className="absolute text-[10px] -top-[2px] -right-[5px] bg-red-500 w-[14px] h-[14px] rounded-full text-white">
+                                    <div className="flex items-center justify-center -mt-[1px]">
+                                    3
+                                    </div> 
+                                </div>
                             </div>
                         </li>
                     </ul>
 
                 </div>
             </div>
-        </>
+        
 
     );
 }
