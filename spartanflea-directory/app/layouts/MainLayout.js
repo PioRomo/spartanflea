@@ -1,5 +1,8 @@
 "use client"; 
 import TopMenu from "./includes/TopMenu";
+import MainHeader from "./includes/MainHeader";
+import SubMenu from "./includes/SubMenu";
+import Footer from "./includes/Footer"; 
 
 export default function MainLayout({children}){
 
@@ -8,6 +11,9 @@ export default function MainLayout({children}){
             <div id="MainLayout" className="min-w-[1050px] max-w-[1300px] mx-auto">
                 <div>
                     <TopMenu /> 
+                    <MainHeader /> 
+                    <SubMenu /> 
+                    <Footer />
                 </div>
             </div>
         </>

@@ -41,13 +41,6 @@ export default function TopMenu(){
                             </div>
                         </li>
                         
-                        <li className="px-3 hover:underline cursor-pointer">
-                            Daily Deals
-                        </li>
-
-                        <li className="px-3 hover:underline cursor-pointer">
-                            Help & Contact
-                        </li>
                     </ul>
                     {/*Right side of the top menu, right of the search bar */}
                     <ul id="TopMenuRight" className="flex items-center text-[11px] text-[#333333] px-2 h-8">
