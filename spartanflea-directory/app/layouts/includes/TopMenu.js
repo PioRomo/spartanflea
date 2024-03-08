@@ -1,7 +1,11 @@
 "use client";
 import Link from "next/link"; 
 import {BsChevronDown} from "react-icons/bs"; 
-import {AiOutlineShoppingCart} from "react-icons/ai"; 
+import { MdChatBubble } from 'react-icons/md';
+import { MdStar } from 'react-icons/md';
+
+
+
 
 export default function TopMenu(){
 
@@ -48,10 +52,24 @@ export default function TopMenu(){
                         <li className="flex items-center gap-2 px-3 hover:underline cursor-pointer">
                             <img width={32} src="https://upload.wikimedia.org/wikipedia/en/thumb/e/ec/San_Jose_State_Spartans_logo.svg/1200px-San_Jose_State_Spartans_logo.svg.png"/>
                         </li>
-                        {/*Shopping Cart symbol  */}
+
+                        {/*Wishlist Symbol  */}
                         <li className="flex items-center gap-2 px-3 hover:underline cursor-pointer">
                             <div className="relative">
-                                <AiOutlineShoppingCart size={22}/>
+                                <MdStar style={{color: 'white'}} size={22}/>
+                                <div className="absolute text-[10px] -top-[2px] -right-[5px] bg-red-500 w-[14px] h-[14px] rounded-full text-white">
+                                    <div className="flex items-center justify-center -mt-[1px]">
+                                    1
+                                    </div> 
+                                </div>
+                            </div>
+                        </li>
+
+
+                        {/*Message Symbol  */}
+                        <li className="flex items-center gap-2 px-3 hover:underline cursor-pointer">
+                            <div className="relative">
+                                <MdChatBubble style={{color: 'white'}} size={22}/>
                                 <div className="absolute text-[10px] -top-[2px] -right-[5px] bg-red-500 w-[14px] h-[14px] rounded-full text-white">
                                     <div className="flex items-center justify-center -mt-[1px]">
                                     3

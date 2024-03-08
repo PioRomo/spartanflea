@@ -1,5 +1,6 @@
 "use client";
 import MainLayout from "@/app/layouts/MainLayout";
+import SimilarProducts from "../../components/SimilarProducts";
 
 export default function Product({params}){
 
@@ -43,10 +44,17 @@ export default function Product({params}){
                                     }
                                 </div>
                                 
-                                {/*Message Button */}
-                                <button className="bg-blue-500 text-white py-2 px-20 rounded-full cursor-pointer">
-                                    Message 
-                                </button>
+                                <div>
+                                    {/*Wishlist Button */}
+                                    <button className="mx-4 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer">
+                                        Wishlist 
+                                    </button>
+                                
+                                    {/*Message Button */}
+                                    <button className="bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer">
+                                        Message 
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -61,6 +69,7 @@ export default function Product({params}){
                     </div>
                 </div>
             </div>
+            <SimilarProducts />
 
         </MainLayout>
     );
