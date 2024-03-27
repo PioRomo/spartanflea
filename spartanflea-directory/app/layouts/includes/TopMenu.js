@@ -59,9 +59,7 @@ export default function TopMenu(){
                                 <div className="relative">
                                     <MdStar style={{color: 'white'}} size={22}/>
                                     <div className="absolute text-[10px] -top-[2px] -right-[5px] bg-red-500 w-[14px] h-[14px] rounded-full text-white">
-                                        <div className="flex items-center justify-center -mt-[1px]">
-                                        1
-                                        </div> 
+                                        
                                     </div>
                                 </div>
                             </Link>
@@ -74,9 +72,6 @@ export default function TopMenu(){
                                 <div className="relative">
                                     <MdChatBubble style={{color: 'white'}} size={22}/>
                                     <div className="absolute text-[10px] -top-[2px] -right-[5px] bg-red-500 w-[14px] h-[14px] rounded-full text-white">
-                                        <div className="flex items-center justify-center -mt-[1px]">
-                                        3
-                                        </div> 
                                     </div>
                                 </div>
                             </Link>
