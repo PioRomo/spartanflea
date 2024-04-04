@@ -3,30 +3,51 @@ import React, { useState } from 'react';
 import MainLayout from "../layouts/MainLayout";
 
 export default function Message() {
-    const initialMessages = [
-        { id: 1, sender: 'John Doe', content: 'Hey, how are you?' },
-        { id: 2, sender: 'Jane Doe', content: 'Hi! I\'m good, how about you?' },
-        { id: 3, sender: 'John Doe', content: 'I\'m doing well too, thanks for asking!' },
+    const initialConversations = [
+        {
+            sender: 'John Doe',
+            messages: [
+                { id: 1, content: 'Hey, how are you?' },
+                { id: 3, content: 'I\'m doing well too, thanks for asking!' }
+            ]
+        },
+        {
+            sender: 'Jane Doe',
+            messages: [
+                { id: 2, content: 'Hi! I\'m good, how about you?' }
+            ]
+        }
     ];
 
-    const [messages, setMessages] = useState(initialMessages);
+    const [conversations, setConversations] = useState(initialConversations);
+    const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);
     const [replyContent, setReplyContent] = useState('');
 
-    const handleReplySubmit = (e, sender) => {
+    const handleConversationClick = (index) => {
+        setSelectedConversationIndex(index);
+        setReplyContent('');
+    };
+
+    const updateConversation = (index, newMessage) => {
+        const updatedConversations = [...conversations];
+        updatedConversations[index].messages.push(newMessage);
+        setConversations(updatedConversations);
+    };
+
+    const handleReplySubmit = (e) => {
         e.preventDefault();
         if (replyContent.trim() === '') return;
 
         const newMessage = {
-            id: messages.length + 1,
+            id: conversations[selectedConversationIndex].messages.length + 1,
             sender: 'You',
             content: replyContent.trim()
         };
-
-        const updatedMessages = [...messages];
-        updatedMessages.push(newMessage);
-        setMessages(updatedMessages);
+        updateConversation(selectedConversationIndex, newMessage);
         setReplyContent('');
     };
+
+    const selectedConversation = conversations[selectedConversationIndex];
 
     return (
         <MainLayout>
@@ -34,17 +55,16 @@ export default function Message() {
                 <div className="w-1/3 pr-4 border-r">
                     <h1 className="text-2xl font-semibold mb-6">Conversations</h1>
                     <div className="divide-y divide-gray-300">
-                        {initialMessages.map(({ sender, content }) => (
-                            <div key={sender} className="p-4 cursor-pointer" onClick={() => setReplyContent('')}>
-                                <h2 className="text-lg font-semibold">{sender}</h2>
-                                <p className="text-gray-500">{content.substring(0, 50)}{(content.length > 50 ? '...' : '')}</p>
+                        {conversations.map((conversation, index) => (
+                            <div key={index} className="p-4 cursor-pointer" onClick={() => handleConversationClick(index)}>
+                                <h2 className="text-lg font-semibold">{conversation.sender}</h2>
                             </div>
                         ))}
                     </div>
                 </div>
                 <div className="w-2/3 pl-4">
                     <div>
-                        {messages.map(({ id, sender, content }) => (
+                        {selectedConversation.messages.map(({ id, sender, content }) => (
                             <div key={id} className={`flex flex-col items-${sender === 'You' ? 'end' : 'start'} mb-4`}>
                                 <div className={`rounded-lg p-3 ${sender === 'You' ? 'bg-gray-200 self-end' : 'bg-blue-500 text-white self-start'}`}>
                                     {content}

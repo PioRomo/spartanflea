@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link"; 
-import {BsChevronDown} from "react-icons/bs"; 
 import { MdChatBubble } from 'react-icons/md';
 import { MdStar } from 'react-icons/md';
 
@@ -16,33 +15,10 @@ export default function TopMenu(){
                     <ul id="TopMenuLeft" className="flex items-cetner text-[11px] text-[#333333] px-2 h-8 ">
                         {/* Login Button*/}
                         <li className="mt-1 relative px-3">
-                            <Link href="/auth" className="text-[15px] text-white flex items-center gap-2 hover:underline cursor-pointer">
+                            <Link href="/login" className="text-[15px] text-white flex items-center gap-2 hover:underline cursor-pointer">
                                 <div>Login</div>
-                                <BsChevronDown />
 
                             </Link>
-
-                            {/*Login DropDown ~ Profile Welcome*/}
-                            <div id="AuthDropDown" className=" hidden absolute bg-white w-[200px] text-[#333333] z-40 top-[20px] left-0 border shawdow-lg">
-                                <div className="flex items-center justify-start gap-3 p-3">
-                                    <img width={50} src="https://picsum.photos/200"/>
-                                    <div className="font-bold test-[13px]">Fortnite Jonesy</div>
-                                </div>
-                                {/* Actual DropDown Menu*/}
-                                <div className="border-b">
-                                    <ul className="bg-white">
-                                        <li className="text-[11px] py-2 px-4 w-full hover:underline text-blue-500 hover:text-blue-600 cursor-point">
-                                            <Link href="/orders">
-                                                My Orders
-                                            </Link>
-                                        </li>
-
-                                        <li className="text-[11px] py-2 px-4 w-full hover:underline text-blue-500 hover:text-blue-600 cursor-point">
-                                            Sign Out
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
                         </li>
                         
                     </ul>
