@@ -19,6 +19,10 @@ export default function Product({ product }) {
           <div className="font-semibold text-[15px] hover:underline cursor-pointer">{product?.title}</div>
           <div className="font-extrabold">${(product?.price / 100).toFixed(2)}</div>
 
+          {/* Displaying the category */}
+          <div className="pt-2 px-1 flex items-center">
+            <div className="font-semibold text-sm hover:underline cursor-pointer">Category:&nbsp;{product?.category}</div>
+          </div>
         </div>
       </Link>
     </>

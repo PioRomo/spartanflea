@@ -10,7 +10,8 @@ export default function SimilarProducts() {
       title: "The Grad Fall 2024 Lease",
       description: "Looking for someone to take over my lease at the Grad. It is $1200(with utilities and wifi), comes with a queen size bed and sturdy table. ",
         url: "https://picsum.photos/id/7", 
-        price: 120000
+        price: 120000,
+        category: "Housing"
 
       },
       {
@@ -18,7 +19,8 @@ export default function SimilarProducts() {
         title: "Lenovo Chromebook", 
         description: "Never used 11.6 inch",
         url: "https://picsum.photos/id/20",
-        price: 8500
+        price: 8500,
+        category: "Electronics"
       }
     ]
     
