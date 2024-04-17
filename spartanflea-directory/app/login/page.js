@@ -1,14 +1,32 @@
 "use client"; 
 import { useState } from 'react';
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Auth, } from '@supabase/auth-ui-react';
+import { createClient } from '@supabase/supabase-js';
+import { useRouter } from 'next/router';
 import Link from "next/link"; 
 
 export default function LoginPage() {
-  const [username, setUsername] = useState('');
+  const supabase = createClientComponentClient();
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    console.log('Logging in with:', username, password);
+    try {
+      const { user, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        throw error;
+      }
+      console.log('User logged in:', user);
+      console.log('Logging in with:', email, password);
+      window.location.href = '/';
+    } catch (error) {
+      alert(error);
+      console.error('Error logging in user:', error.message);
+      setEmail('');
+      setPassword('');
+    }
   };
 
   return (
@@ -26,19 +44,19 @@ export default function LoginPage() {
           <input type="hidden" name="remember" value="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="username" className="sr-only">
-                Username
+              <label htmlFor="email" className="sr-only">
+                E-mail
               </label>
               <input
-                id="username"
-                name="username"
+                id="email"
+                name="email"
                 type="text"
-                autoComplete="username"
+                autoComplete="email"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                placeholder="E-mail"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>

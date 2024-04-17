@@ -1,15 +1,36 @@
 "use client"; 
 import { useState } from 'react';
+import { Auth, } from '@supabase/auth-ui-react';
+import { createClient } from '@supabase/supabase-js';
 import Link from "next/link"; 
-
 export default function Register() {
+  const supabase = createClient('https://ckjvjcjjzomgzucvmjpc.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNranZqY2pqem9tZ3p1Y3ZtanBjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTIzMDM1OTksImV4cCI6MjAyNzg3OTU5OX0.uFTeWF_i3FLgWam4fuMxhmowudLOt7CdqrmQIbWFd3U');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    console.log('Registering with:', username, email, password);
+    try {
+      const { user, error } = await supabase.auth.signUp({ 
+        email: email, 
+        password: password,
+        options: {
+          data: {
+            username: username
+          }
+        }
+       });
+      if (error) {
+        throw error;
+      }
+      alert('Account successfully created!');
+      console.log('Registration successful:', user);
+      window.location.href = '/login';
+    } catch (error) {
+      alert(error);
+      console.error('Error registering user:', error.message);
+    }
   };
 
   return (
@@ -88,7 +109,7 @@ export default function Register() {
           <div className="flex items-center justify-center">
             <div className="text-sm">
             <a
-                href="/register"
+                href="/login"
                 className="font-medium text-black hover:text-blue-700"
               >
                 Already have an account? 

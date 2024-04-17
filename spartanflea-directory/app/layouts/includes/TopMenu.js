@@ -1,25 +1,34 @@
-"use client";
-import Link from "next/link"; 
+"use client"
 import { MdChatBubble } from 'react-icons/md';
 import { MdStar } from 'react-icons/md';
-
+import { createClient } from '@supabase/supabase-js';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { Auth, } from '@supabase/auth-ui-react';
+import { useRouter } from "next/navigation";
+import Link from "next/link"; 
 
 
 
 export default function TopMenu(){
+    const router = useRouter();
+    const supabase = createClientComponentClient();
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+        router.refresh();
+        setUser(null)
+    }
 
     return(
-        
-            <div id="TopMenu" className ="bg-blue-700 p-2 border-b">
+            <div id="TopMenu" className ="bg-blue-700 p-2 border-b"> 
                 <div className="flex items-center justify-between w-full mx-auto max-w-[1200px]">
                     <ul id="TopMenuLeft" className="flex items-cetner text-[11px] text-[#333333] px-2 h-8 ">
-                        {/* Login Button*/}
-                        <li className="mt-1 relative px-3">
-                            <Link href="/login" className="text-[15px] text-white flex items-center gap-2 hover:underline cursor-pointer">
-                                <div>Login</div>
+                        {/* Logout button*/}
+                    <li className="mt-1 relative px-3">
+                        <Link href="/login" className="text-[15px] text-white flex items-center gap-2 hover:underline cursor-pointer">
+                            <div><a onClick={handleLogout}>Logoff</a></div>
 
-                            </Link>
-                        </li>
+                        </Link>
+                    </li>
                         
                     </ul>
                     {/*Right side of the top menu, right of the search bar */}
@@ -59,4 +68,5 @@ export default function TopMenu(){
         
 
     );
+
 }

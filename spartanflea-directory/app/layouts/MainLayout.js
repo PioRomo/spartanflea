@@ -1,4 +1,4 @@
-"use client"; 
+//"use client"; 
 import TopMenu from "./includes/TopMenu";
 import MainHeader from "./includes/MainHeader";
 import SubMenu from "./includes/SubMenu";
