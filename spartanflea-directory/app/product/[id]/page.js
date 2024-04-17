@@ -10,9 +10,9 @@ export default function Product({params}){
         title: "The Grad Fall 2024 Lease",
         description: "$1200 per month, utliities included, private bedroom",
         url: "https://picsum.photos/id/7", 
-        price: 120000
-    
-        
+        price: 120000,
+        category: "Housing" 
+  
     }
  
     return(
@@ -64,6 +64,12 @@ export default function Product({params}){
                         <div className="pt-3">
                             <div className="font-semibold pb-1"> Description: </div>
                             <div className="text-sm">{product?.description}</div>
+                        </div>
+
+                        {/* Category */}
+                        <div className="pt-3">
+                            <div className="font-semibold pb-1"> Category: </div>
+                            <div className="text-sm">{product?.category}</div>
                         </div>
                         
                     </div>
