@@ -1,4 +1,6 @@
 import MainLayout from "@/app/layouts/ProfileLayout";
+import Link from "next/link"; 
+
 
 export default function Profile() {
     const profile = {
@@ -10,10 +12,10 @@ export default function Profile() {
 
     return (
         <MainLayout>
-            <div className="max-w-[1100px] mx-auto flex">
+            <div className="max-w-[900px] mx-auto flex space-x-16">
                 {/* Left Column */}
                 <div className="w-1/3">
-                    <div className="px-4 mb-2 mt-10">
+                    <div className="px-4 mb-4 mt-10">
                         <div className="font-bold text-xl">{profile?.title}</div>
                     </div>
                     {profile?.url ? (
@@ -28,10 +30,10 @@ export default function Profile() {
                 </div>
 
                 {/* Middle Column */}
-                <div className="w-1/3 px-4">
-                    <div className="border-b py-1"></div>
+                <div className="w-1/3 mt-10">
+                    
 
-                    <div className="mt-14 mb-12 mr-8 ml-12">
+                    <div className="mt-4 mb-12 mr-4 ml-8">
                         <div className="bg-gray-200 rounded-lg p-2 overflow-auto max-h-200">
                             <div className="pt-3">
                                 <div className="font-semibold pb-1">Items Listed:</div>
@@ -40,7 +42,7 @@ export default function Profile() {
                         </div>
                     </div>
 
-                    <div className="mt-4 mb-12 mr-8 ml-12">
+                    <div className="mt-4 mb-12 mr-4 ml-8">
                         <div className="bg-gray-200 rounded-lg p-2 overflow-auto max-h-200">
                             <div className="pt-3">
                                 <div className="font-semibold pb-1">Items Wishlisted:</div>
@@ -49,7 +51,7 @@ export default function Profile() {
                         </div>
                     </div>
 
-                    <div className="mt-4 mb-12 mr-8 ml-12">
+                    <div className="mt-4 mb-12 mr-4 ml-8">
                         <div className="bg-gray-200 rounded-lg p-2 overflow-auto max-h-200">
                             <div className="pt-3">
                                 <div className="font-semibold pb-1">Conversations:</div>
@@ -60,18 +62,23 @@ export default function Profile() {
                 </div>
 
                 {/* Right Column */}
-                <div className="w-1/3 px-4">
-                    <div className="border-b py-1 mb-6"></div>
-                    <div className="pt-12 grid grid-rows-3 gap-20">
-                        <button className="mx-10 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer">
+                <div className="w-1/3 mt-4">
+                    <div className="pt-12 grid grid-rows-3 gap-14">
+                        <Link href="/sell" className="mx-10 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer inline-flex items-center justify-center">
+                        <button>
                             Create New Listing
                         </button>
-                        <button className="mx-10 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer">
+                        </Link>
+                        <Link href="/wishlist" className="mx-10 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer inline-flex items-center justify-center">
+                        <button>
                             View Wishlist
                         </button>
-                        <button className="mx-10 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer">
+                        </Link>
+                        <Link href="/messages" className="mx-10 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer inline-flex items-center justify-center">
+                        <button>
                             View Inbox
                         </button>
+                        </Link>
                     </div>
                 </div>
             </div>
