@@ -16,7 +16,7 @@ export default function TopMenu(){
                         {/* Login Button*/}
                         <li className="mt-1 relative px-3">
                             <Link href="/login" className="text-[15px] text-white flex items-center gap-2 hover:underline cursor-pointer">
-                                <div>Login</div>
+                                <div>Hello, Flea</div>
 
                             </Link>
                         </li>
