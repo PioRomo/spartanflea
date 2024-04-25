@@ -1,10 +1,28 @@
-"use client"
+//"use client"
 import {Alfa_Slab_One} from 'next/font/google'; 
-
+import { createClient } from '@supabase/supabase-js';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { Auth, } from '@supabase/auth-ui-react';
 import MainLayout from './layouts/MainLayout.js'
 import Product from './components/Product.js';
+import { cookies } from 'next/headers'
+import Link from 'next/link';
 
-export default function Home() {
+export default async function Home() {
+  const cookieStore = cookies();
+  const supabase = createServerComponentClient({cookies: () => cookieStore});
+
+  const {data: {user}} = await supabase.auth.getUser()
+
+  if (!user){
+    return (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+        <Link href={'/login'}>
+          You are not logged in. Click here to go login.
+        </Link>
+      </main>
+    )
+  }
 
   const products = [
     {
@@ -25,7 +43,12 @@ export default function Home() {
       }
     ]
     return (
-      <>
+      /* Example for accessing user data<>
+      <div>
+      <h1>Welcome to the Main Page</h1>
+      {user && <p>Hello, {user.user_metadata.username}</p>}
+    </div>*/
+    <>
           <MainLayout>
             <div className="max-w-[1200px] mx-auto">
               <div className="text-2xl font-bold mt-4 mb-6 px-4">Products</div>
