@@ -2,6 +2,7 @@
 import Link from "next/link"; 
 import { MdChatBubble } from 'react-icons/md';
 import { MdStar } from 'react-icons/md';
+import { CgProfile } from "react-icons/cg";
 
 
 
@@ -27,7 +28,11 @@ export default function TopMenu(){
                         {/*Spartan Logo (totally optional, can remove) */}
                         <li className="flex items-center gap-2 px-3 hover:underline cursor-pointer">
                         <Link href="/profile">
-                            <img width={32} src="https://upload.wikimedia.org/wikipedia/en/thumb/e/ec/San_Jose_State_Spartans_logo.svg/1200px-San_Jose_State_Spartans_logo.svg.png"/>
+                            <div className="relative">
+                                <CgProfile style={{color: 'white'}} size={22}/>
+                                <div className="absolute text-[10px] -top-[2px] -right-[5px] bg-red-500 w-[14px] h-[14px] rounded-full text-white">
+                                </div>
+                            </div>
                         </Link>
                         </li>
 

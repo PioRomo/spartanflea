@@ -1,14 +1,32 @@
+"use client";
 import MainLayout from "@/app/layouts/ProfileLayout";
 import Link from "next/link"; 
-
+import { PrismaClient } from '@prisma/client';
+import { useEffect, useState } from 'react';
+import { useAuth } from '@supabase/auth-ui-react';
 
 export default function Profile() {
-    const profile = {
+
+    const defaultImageUrl = "https://content.sportslogos.net/logos/34/828/full/san_jose_state_spartans_logo_alternate_20006654.png";
+    const [profile, setProfile] = useState({
         id: 1,
         title: "Flea's Profile",
         description: "Space Holder",
-        url: "https://picsum.photos/id/7",
+        url: defaultImageUrl,
+    });
+
+    const handleImageUpload = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            setProfile((prevProfile) => ({
+                ...prevProfile,
+                url: imageUrl,
+            }));
+        }
     };
+
+    console.log(defaultImageUrl);
 
     return (
         <MainLayout>
@@ -16,18 +34,26 @@ export default function Profile() {
                 {/* Left Column */}
                 <div className="w-1/3">
                     <div className="px-4 mb-4 mt-10">
-                        <div className="font-bold text-xl">{profile?.title}</div>
+                        <div className="text-center font-bold text-xl">{profile?.title}</div>
                     </div>
-                    {profile?.url ? (
-                        <img
-                            className="w-full rounded-full" // Modified class to make the image rounded
-                            src={profile?.url + '/280'}
-                            alt={profile?.title}
+                    <img
+                        className="w-56 h-56 rounded-full ml-4" 
+                        src={profile?.url}
+                        alt={profile?.title}
+                    />
+                    <div className="text-center mt-12 text-sm bg-blue-600 rounded-full pt-1 pb-1 text-white cursor-pointer relative">
+                        Upload/Change Profile Picture
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageUpload}
+                            className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+                            id="profile-picture-input"
                         />
-                    ) : (
-                        <div className="w-full"></div>
-                    )}
+                    </div>
+                    
                 </div>
+
 
                 {/* Middle Column */}
                 <div className="w-1/3 mt-10">
@@ -64,17 +90,17 @@ export default function Profile() {
                 {/* Right Column */}
                 <div className="w-1/3 mt-4">
                     <div className="pt-12 grid grid-rows-3 gap-14">
-                        <Link href="/sell" className="mx-10 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer inline-flex items-center justify-center">
+                        <Link href="/sell" className="mx-10 bg-blue-600 text-white py-2 px-10 rounded-full cursor-pointer inline-flex items-center justify-center">
                         <button>
                             Create New Listing
                         </button>
                         </Link>
-                        <Link href="/wishlist" className="mx-10 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer inline-flex items-center justify-center">
+                        <Link href="/wishlist" className="mx-10 bg-blue-600 text-white py-2 px-10 rounded-full cursor-pointer inline-flex items-center justify-center">
                         <button>
                             View Wishlist
                         </button>
                         </Link>
-                        <Link href="/messages" className="mx-10 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer inline-flex items-center justify-center">
+                        <Link href="/messages" className="mx-10 bg-blue-600 text-white py-2 px-10 rounded-full cursor-pointer inline-flex items-center justify-center">
                         <button>
                             View Inbox
                         </button>
