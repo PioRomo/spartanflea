@@ -1,4 +1,6 @@
 "use client";
+import Link from "next/link"; 
+
 
 export default function Footer(){
     return(
@@ -6,27 +8,38 @@ export default function Footer(){
         <div className="flex items-baseline justify-between w-full mx-auto max-w-[1200px] py-10">
             <ul className="text-white">
                 <li className="font-bold text-lg">Buy</li>
-                <li className="mt-2 py-1 text-xs hover:underline cursor-pointer">Registration</li>
-                <li className="py-1 text-xs hover:underline cursor-pointer">Money Back Guarantee</li>
-                <li className="py-1 text-xs hover:underline cursor-pointer">Bidding & buying help</li>
-                <li className="py-1 text-xs hover:underline cursor-pointer">Stores</li>
+                <li className="mt-2 py-1 text-xs hover:underline cursor-pointer">
+                    <Link href="/register">Registration</Link>
+                </li>
+                <li className="py-1 text-xs hover:underline cursor-pointer">
+                    <Link href="/help">Buying help</Link>
+                </li>
             </ul>
 
             <ul className="text-white">
                 <li className="font-bold text-lg">Sell</li>
-                <li className="mt-2 py-1 text-xs hover:underline cursor-pointer">Start selling</li>
-                <li className="py-1 text-xs hover:underline cursor-pointer">Learn to sell</li>
-                <li className="py-1 text-xs hover:underline cursor-pointer">Affiliates</li>
+                <li className="mt-2 py-1 text-xs hover:underline cursor-pointer">
+                    <Link href="/sell">Start Selling</Link>
+                </li>
+                <li className="py-1 text-xs hover:underline cursor-pointer">
+                    <Link href="/sell">Learn to Sell</Link>
+                </li>
+                <li className="py-1 text-xs hover:underline cursor-pointer">
+                    <Link href="/affiliates">Affiliates</Link>
+                </li>
             </ul>
 
             <ul className="text-white">
                 <li className="font-bold text-lg">About SpartanFlea</li>
-                <li className="mt-2 py-1 text-xs hover:underline cursor-pointer">Company info</li>
-                <li className="py-1 text-xs hover:underline cursor-pointer">News</li>
-                <li className="py-1 text-xs hover:underline cursor-pointer">Investors</li>
-                <li className="py-1 text-xs hover:underline cursor-pointer">Careers</li>
-                <li className="py-1 text-xs hover:underline cursor-pointer">Government relations</li>
-                <li className="py-1 text-xs hover:underline cursor-pointer">Policies</li>
+                <li className="mt-2 py-1 text-xs hover:underline cursor-pointer">
+                    <Link href="/about">Learn More About Us</Link>
+                </li>
+                <li className="py-1 text-xs hover:underline cursor-pointer">
+                    <Link href="/news">News</Link>
+                </li>
+                <li className="py-1 text-xs hover:underline cursor-pointer">
+                    <Link href="/policies">Policies</Link>
+                </li>
             </ul>
             
         </div>
