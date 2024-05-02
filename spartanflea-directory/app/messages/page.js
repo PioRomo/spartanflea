@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import MainLayout from "../layouts/MainLayout";
 
 export default function Message() {
@@ -8,13 +8,7 @@ export default function Message() {
             sender: 'John Doe',
             messages: [
                 { id: 1, content: 'Hey, how are you?' },
-                { id: 3, content: 'I\'m doing well too, thanks for asking!' }
-            ]
-        },
-        {
-            sender: 'Jane Doe',
-            messages: [
-                { id: 2, content: 'Hi! I\'m good, how about you?' }
+                { id: 2, content: 'I\'m doing well too, thanks for asking!' }
             ]
         }
     ];
@@ -22,6 +16,15 @@ export default function Message() {
     const [conversations, setConversations] = useState(initialConversations);
     const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);
     const [replyContent, setReplyContent] = useState('');
+    const messagesEndRef = useRef(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [selectedConversationIndex, conversations]);
 
     const handleConversationClick = (index) => {
         setSelectedConversationIndex(index);
@@ -47,6 +50,13 @@ export default function Message() {
         setReplyContent('');
     };
 
+    const handleKeyDown = (e) => {
+        if(e.key == 'Enter' && !e.shiftKey){
+            e.preventDefault(); 
+            handleReplySubmit(e); 
+        }
+    };
+
     const selectedConversation = conversations[selectedConversationIndex];
 
     return (
@@ -63,7 +73,7 @@ export default function Message() {
                     </div>
                 </div>
                 <div className="w-2/3 pl-4">
-                    <div>
+                    <div className="message-container" style={{ maxHeight: '400px', overflowY: 'auto' }}>
                         {selectedConversation.messages.map(({ id, sender, content }) => (
                             <div key={id} className={`flex flex-col items-${sender === 'You' ? 'end' : 'start'} mb-4`}>
                                 <div className={`rounded-lg p-3 ${sender === 'You' ? 'bg-gray-200 self-end' : 'bg-blue-500 text-white self-start'}`}>
@@ -71,16 +81,18 @@ export default function Message() {
                                 </div>
                             </div>
                         ))}
-                        <form onSubmit={(e) => handleReplySubmit(e)} className="mt-4">
-                            <textarea
-                                value={replyContent}
-                                onChange={(e) => setReplyContent(e.target.value)}
-                                placeholder="Type your message here..."
-                                className="w-full p-3 border rounded-md focus:outline-none focus:ring focus:border-blue-500"
-                            />
-                            <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Send</button>
-                        </form>
+                        <div ref={messagesEndRef} />
                     </div>
+                    <form onSubmit={(e) => handleReplySubmit(e)} className="mt-4">
+                        <textarea
+                            value={replyContent}
+                            onChange={(e) => setReplyContent(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            placeholder="Type your message here..."
+                            className="w-full p-3 border rounded-md focus:outline-none focus:ring focus:border-blue-500"
+                        />
+                        <button type="submit" className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Send</button>
+                    </form>
                 </div>
             </div>
         </MainLayout>

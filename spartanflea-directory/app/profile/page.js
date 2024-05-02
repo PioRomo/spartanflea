@@ -1,5 +1,5 @@
 "use client";
-import MainLayout from "@/app/layouts/ProfileLayout";
+import MainLayout from "@/app/layouts/MainLayout";
 import Link from "next/link"; 
 import { PrismaClient } from '@prisma/client';
 import { useEffect, useState } from 'react';
@@ -10,8 +10,8 @@ export default function Profile() {
     const defaultImageUrl = "https://content.sportslogos.net/logos/34/828/full/san_jose_state_spartans_logo_alternate_20006654.png";
     const [profile, setProfile] = useState({
         id: 1,
-        title: "Flea's Profile",
-        description: "Space Holder",
+        title: "My Profile",
+        description: "0",
         url: defaultImageUrl,
     });
 

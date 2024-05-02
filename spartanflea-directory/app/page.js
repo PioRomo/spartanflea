@@ -41,6 +41,7 @@ export default async function Home() {
         price: 8500,
         category: "Electronics"
       }
+      
     ]
     return (
       /* Example for accessing user data<>
