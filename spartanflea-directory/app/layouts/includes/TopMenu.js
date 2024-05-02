@@ -1,6 +1,7 @@
 "use client"
 import { MdChatBubble } from 'react-icons/md';
 import { MdStar } from 'react-icons/md';
+import { CgProfile } from "react-icons/cg";
 import { createClient } from '@supabase/supabase-js';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Auth, } from '@supabase/auth-ui-react';
@@ -21,7 +22,7 @@ export default function TopMenu(){
     return(
             <div id="TopMenu" className ="bg-blue-700 p-2 border-b"> 
                 <div className="flex items-center justify-between w-full mx-auto max-w-[1200px]">
-                    <ul id="TopMenuLeft" className="flex items-cetner text-[11px] text-[#333333] px-2 h-8 ">
+                    <ul id="TopMenuLeft" className="flex items-center text-[11px] text-[#333333] px-2 h-8 ">
                         {/* Logout button*/}
                     <li className="mt-1 relative px-3">
                         <Link href="/login" className="text-[15px] text-white flex items-center gap-2 hover:underline cursor-pointer">
@@ -36,7 +37,7 @@ export default function TopMenu(){
                         {/*Spartan Logo (totally optional, can remove) */}
                         <li className="flex items-center gap-2 px-3 hover:underline cursor-pointer">
                         <Link href="/profile">
-                            <img width={32} src="https://upload.wikimedia.org/wikipedia/en/thumb/e/ec/San_Jose_State_Spartans_logo.svg/1200px-San_Jose_State_Spartans_logo.svg.png"/>
+                            <CgProfile style={{color: 'white'}} size={22} />
                         </Link>
                         </li>
 
