@@ -2,6 +2,7 @@
 import Link from "next/link"; 
 import { MdChatBubble } from 'react-icons/md';
 import { MdStar } from 'react-icons/md';
+import { CgProfile } from "react-icons/cg";
 
 
 
@@ -15,9 +16,17 @@ export default function TopMenu(){
                     <ul id="TopMenuLeft" className="flex items-cetner text-[11px] text-[#333333] px-2 h-8 ">
                         {/* Login Button*/}
                         <li className="mt-1 relative px-3">
-                            <Link href="/login" className="text-[15px] text-white flex items-center gap-2 hover:underline cursor-pointer">
+                            <Link href="/profile" className="text-[15px] text-white flex items-center gap-2 hover:underline cursor-pointer">
                                 <div>Hello, Flea</div>
 
+                            </Link>
+                        </li>
+
+                        <li className="relative px-3">
+                            <Link href="/login" className="text-[15px] text-white flex items-center gap-2 hover:underline cursor-pointer">
+                                <button className="bg-red-600 text-white px-2 py-1 rounded-md hover:bg-red-600">
+                                    Logout
+                                </button>
                             </Link>
                         </li>
                         
@@ -27,7 +36,10 @@ export default function TopMenu(){
                         {/*Spartan Logo (totally optional, can remove) */}
                         <li className="flex items-center gap-2 px-3 hover:underline cursor-pointer">
                         <Link href="/profile">
-                            <img width={32} src="https://upload.wikimedia.org/wikipedia/en/thumb/e/ec/San_Jose_State_Spartans_logo.svg/1200px-San_Jose_State_Spartans_logo.svg.png"/>
+                            <div className="relative">
+                                <CgProfile style={{color: 'white'}} size={22}/>
+                                
+                            </div>
                         </Link>
                         </li>
 
@@ -36,9 +48,7 @@ export default function TopMenu(){
                             <Link href="/wishlist">
                                 <div className="relative">
                                     <MdStar style={{color: 'white'}} size={22}/>
-                                    <div className="absolute text-[10px] -top-[2px] -right-[5px] bg-red-500 w-[14px] h-[14px] rounded-full text-white">
-                                        
-                                    </div>
+                                    
                                 </div>
                             </Link>
                         </li>
@@ -49,8 +59,7 @@ export default function TopMenu(){
                             <Link href="/messages"> 
                                 <div className="relative">
                                     <MdChatBubble style={{color: 'white'}} size={22}/>
-                                    <div className="absolute text-[10px] -top-[2px] -right-[5px] bg-red-500 w-[14px] h-[14px] rounded-full text-white">
-                                    </div>
+                                    
                                 </div>
                             </Link>
                         </li>
