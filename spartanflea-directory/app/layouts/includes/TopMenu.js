@@ -46,9 +46,7 @@ export default function TopMenu(){
                             <Link href="/wishlist">
                                 <div className="relative">
                                     <MdStar style={{color: 'white'}} size={22}/>
-                                    <div className="absolute text-[10px] -top-[2px] -right-[5px] bg-red-500 w-[14px] h-[14px] rounded-full text-white">
-                                        
-                                    </div>
+                                    
                                 </div>
                             </Link>
                         </li>
@@ -59,8 +57,7 @@ export default function TopMenu(){
                             <Link href="/messages"> 
                                 <div className="relative">
                                     <MdChatBubble style={{color: 'white'}} size={22}/>
-                                    <div className="absolute text-[10px] -top-[2px] -right-[5px] bg-red-500 w-[14px] h-[14px] rounded-full text-white">
-                                    </div>
+                                    
                                 </div>
                             </Link>
                         </li>
