@@ -11,7 +11,7 @@ export default function Affiliates() {
             <div className="max-w-[1100px] mx-auto flex space-x-16">
 
                 {/* Left Column */}
-                <div className="w-1/3 mt-4 ml-10 flex flex-col items-center">
+                <div className="w-1/3 mt-10 ml-10 flex flex-col items-center">
                     <div className="flex flex-col items-center h-full border border-gray-400 rounded p-4">
                         <img
                             className="w-60 h-auto"
@@ -27,7 +27,7 @@ export default function Affiliates() {
                 </div>
 
                 {/* Middle Column */}
-                <div className="w-1/3 mt-4 flex flex-col items-center">
+                <div className="w-1/3 mt-10 flex flex-col items-center">
                     <div className="flex flex-col items-center h-full border border-gray-400 rounded p-4">
                         <img
                             className="w-60 h-auto"
@@ -43,7 +43,7 @@ export default function Affiliates() {
                 </div>
 
                 {/* Right Column */}
-                <div className="w-1/3 mt-4 flex flex-col items-center">
+                <div className="w-1/3 mt-10 flex flex-col items-center">
                     <div className="flex flex-col items-center h-full border border-gray-400 rounded p-4">
                         <img
                             className="w-60 h-auto"

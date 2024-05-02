@@ -12,7 +12,7 @@ export default function Footer(){
                     <Link href="/register">Registration</Link>
                 </li>
                 <li className="py-1 text-xs hover:underline cursor-pointer">
-                    <Link href="/help">Buying help</Link>
+                    <Link href="/help">Buying Help</Link>
                 </li>
             </ul>
 
