@@ -1,5 +1,5 @@
 "use client";
-import MainLayout from "../layouts/MainLayout";
+import MainLayout from "../layouts/ProfileLayout";
 
 export default function Sell(){
 
