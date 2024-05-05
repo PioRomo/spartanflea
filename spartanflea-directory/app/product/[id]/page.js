@@ -1,10 +1,13 @@
 "use client";
 import MainLayout from "@/app/layouts/MainLayout";
 import SimilarProducts from "../../components/SimilarProducts";
+import { createClient } from '@supabase/supabase-js';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { useState, useEffect } from 'react';
 
 export default function Product({params}){
 
-    const product = {
+    /*const product = {
         
         id: 1,
         title: "The Grad Fall 2024 Lease",
@@ -13,16 +16,51 @@ export default function Product({params}){
         price: 120000,
         category: "Housing" 
   
-    }
- 
+    }*/
+    const [product, setProduct] = useState(null);
+    const [sellerUsername, setSellerUsername] = useState(null);
+    
+    useEffect(() => {
+        async function fetchProduct() {
+            // Initialize Supabase client
+            const supabase = createClientComponentClient();
+
+            // Fetch product details from Supabase
+            const { data: productData, productError } = await supabase
+                .from('productlisting')
+                .select('*')
+                .eq('listingid', params.id)
+                .single();
+
+            if (productError) {
+                console.error('Error fetching product:', error.message);
+            } else {
+                setProduct(productData);
+                console.log(productData);
+                const { data: sellerData, error: sellerError } = await supabase
+                    .from('profile')
+                    .select('username')
+                    .eq('id', productData.user_id)
+                    .single();
+                if (sellerError) {
+                    console.error('Error fetching seller:', sellerError.message);
+                } else {
+                    setSellerUsername(sellerData.username);
+                }
+            }
+        }
+
+        fetchProduct();
+    }, [params.id]);
+
     return(
         <MainLayout>
 
             <div className="max-w-[1200px] mx-auto">
                 <div className="flex px-4 py-10">
 
-                    {product?.url 
-                        ? <img className="w-[40%] rounded-lg" src={product?.url+'/280'} />
+                    {product?.image_link 
+                        ? <img className="w-[40%] rounded-lg" src={'https://ckjvjcjjzomgzucvmjpc.supabase.co/storage/v1/object/public/listing-images/' + product.image_link} />
                         : <div className="w-[40%]"></div>
                     }
 
@@ -38,7 +76,7 @@ export default function Product({params}){
                                     Price: 
                                     {product?.price
                                         ? <div className="font-bold text-[20px] ml-2">
-                                            ${(product?.price / 100).toFixed(2)}
+                                            ${product.price}
                                         </div>
                                         : null
                                     }
@@ -71,7 +109,10 @@ export default function Product({params}){
                             <div className="font-semibold pb-1"> Category: </div>
                             <div className="text-sm">{product?.category}</div>
                         </div>
-                        
+                        <div className="pt-3">
+                            <div className="font-semibold pb-1"> Seller: </div>
+                            <div className="text-sm">{sellerUsername}</div>
+                        </div>
                     </div>
                 </div>
             </div>
