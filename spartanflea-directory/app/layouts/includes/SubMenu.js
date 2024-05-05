@@ -4,7 +4,7 @@ export default function SubMenu(){
     {/* Categories */}
     const menuItems = [
         { id: 1, name: 'Home', link: '/' },
-        { id: 2, name: 'Saved', link: '/categories/saved' },
+        { id: 2, name: 'Saved', link: '/wishlist' },
         { id: 3, name: 'Housing', link: '/categories/housing' },
         { id: 4, name: 'Electronics', link: '/categories/electronics' },
         { id: 5, name: 'Furniture', link: '/categories/furniture' },
