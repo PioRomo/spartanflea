@@ -1,6 +1,8 @@
 "use client";
-import React, { useState } from 'react';
 import MainLayout from "../layouts/MainLayout";
+import { useState, useEffect } from 'react';
+import { createClient } from '@supabase/supabase-js';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 export default function Message() {
     const initialConversations = [
@@ -19,9 +21,73 @@ export default function Message() {
         }
     ];
 
-    const [conversations, setConversations] = useState(initialConversations);
+    const [conversations, setConversations] = useState([]);
     const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);
     const [replyContent, setReplyContent] = useState('');
+    const [messages, setMessages] = useState([]);
+    const [userid, setUserid] = useState('');
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await fetchConversations();
+        };
+    
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        async function fetchMessages() {
+            if (conversations.length === 0) return;
+            const conversationId = conversations[selectedConversationIndex].id;
+            const supabase = createClientComponentClient();
+            const { data, error } = await supabase
+                .from('message')
+                .select('*')
+                .eq('conversation_id', conversationId);
+            if (error) {
+                console.error('Error fetching messages:', error.message);
+            } else {
+                setMessages(data);
+            }
+        }
+
+        fetchMessages();
+    }, [selectedConversationIndex, conversations]);
+
+    const fetchConversations = async () => {
+        try {
+            const supabase = createClientComponentClient();
+            const {data: {user}} = await supabase.auth.getUser();
+            setUserid(user.id);
+            if (!user) {
+                // User is not authenticated, handle accordingly
+                return;
+            }
+
+            const { data, error } = await supabase
+                .from('conversation')
+                .select('*')
+                .or(`messenger_id.eq.${user.id},reciever_id.eq.${user.id}`);
+
+            if (error) {
+                throw error;
+            }
+
+            setConversations(data || []);
+            const { userData, userError } = await supabase
+                .from('profile')
+                .select('*')
+                .eq(`id`, );
+
+            if (error) {
+                throw error;
+            }
+        } catch (error) {
+            console.error('Error fetching conversations:', error.message);
+            // Handle error
+        }
+    };
 
     const handleConversationClick = (index) => {
         setSelectedConversationIndex(index);
@@ -34,17 +100,22 @@ export default function Message() {
         setConversations(updatedConversations);
     };
 
-    const handleReplySubmit = (e) => {
+    const handleReplySubmit = async (e) => {
         e.preventDefault();
         if (replyContent.trim() === '') return;
-
-        const newMessage = {
-            id: conversations[selectedConversationIndex].messages.length + 1,
-            sender: 'You',
-            content: replyContent.trim()
-        };
-        updateConversation(selectedConversationIndex, newMessage);
-        setReplyContent('');
+        const conversationId = conversations[selectedConversationIndex].id;
+        const supabase = createClientComponentClient();
+        const {data: {user}} = await supabase.auth.getUser();
+        const { data, error } = await supabase
+            .from('message')
+            .insert([{ conversation_id: conversationId, content: replyContent, user_id: user.id }])
+            .select('*');
+        if (error) {
+            console.error('Error sending message:', error.message);
+        } else {
+            setReplyContent('');
+            setMessages([...messages, data[0]]);
+        }
     };
 
     const selectedConversation = conversations[selectedConversationIndex];
@@ -56,17 +127,17 @@ export default function Message() {
                     <h1 className="text-2xl font-semibold mb-6">Conversations</h1>
                     <div className="divide-y divide-gray-300">
                         {conversations.map((conversation, index) => (
-                            <div key={index} className="p-4 cursor-pointer" onClick={() => handleConversationClick(index)}>
-                                <h2 className="text-lg font-semibold">{conversation.sender}</h2>
+                            <div key={index} className={`p-4 cursor-pointer ${selectedConversationIndex === index ? 'bg-gray-500 text-white' : ''}`} onClick={() => handleConversationClick(index)}>
+                                <h2 className="text-lg font-semibold">{conversation.reciever_id}</h2>
                             </div>
                         ))}
                     </div>
                 </div>
                 <div className="w-2/3 pl-4">
                     <div>
-                        {selectedConversation.messages.map(({ id, sender, content }) => (
-                            <div key={id} className={`flex flex-col items-${sender === 'You' ? 'end' : 'start'} mb-4`}>
-                                <div className={`rounded-lg p-3 ${sender === 'You' ? 'bg-gray-200 self-end' : 'bg-blue-500 text-white self-start'}`}>
+                        {messages?.map(({ id, user_id, content }) => (
+                            <div key={id} className={`flex flex-col items-${user_id === userid ? 'end' : 'start'} mb-4`}>
+                                <div className={`rounded-lg p-3 ${user_id === userid ? 'bg-gray-200 self-end' : 'bg-blue-500 text-white self-start'}`}>
                                     {content}
                                 </div>
                             </div>

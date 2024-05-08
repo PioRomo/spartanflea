@@ -7,16 +7,6 @@ import { useState, useEffect } from 'react';
 
 export default function Product({params}){
 
-    /*const product = {
-        
-        id: 1,
-        title: "The Grad Fall 2024 Lease",
-        description: "$1200 per month, utliities included, private bedroom",
-        url: "https://picsum.photos/id/7", 
-        price: 120000,
-        category: "Housing" 
-  
-    }*/
     const [product, setProduct] = useState(null);
     const [sellerUsername, setSellerUsername] = useState(null);
     
@@ -52,6 +42,32 @@ export default function Product({params}){
 
         fetchProduct();
     }, [params.id]);
+
+    const handleSendMessage = async () => {
+        const supabase = createClientComponentClient();
+        const {data: {user}} = await supabase.auth.getUser();
+        try {
+            // Create a conversation between the current user and the seller
+            const { data, error } = await supabase
+                .from('conversation')
+                .insert([
+                    {
+                        messenger_id: user.id,
+                        reciever_id: product.user_id,
+                    },
+                ]);
+
+            if (error) {
+                throw new Error(error.message);
+            } else {
+                console.log('Conversation created successfully:', data);
+                // Handle success
+            }
+        } catch (error) {
+            console.error('Error creating conversation:', error.message);
+            // Handle error
+        }
+    };
 
     return(
         <MainLayout>
@@ -89,7 +105,7 @@ export default function Product({params}){
                                     </button>
                                 
                                     {/*Message Button */}
-                                    <button className="bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer">
+                                    <button className="bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer" onClick={handleSendMessage}>
                                         Message 
                                     </button>
                                 </div>
