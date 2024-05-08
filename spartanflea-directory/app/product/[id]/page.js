@@ -1,8 +1,16 @@
 "use client";
 import MainLayout from "@/app/layouts/MainLayout";
 import SimilarProducts from "../../components/SimilarProducts";
+import { useState } from 'react'; 
 
 export default function Product({params}){
+
+    const [isAdded, setIsAdded] = useState(false);
+
+    const addToWishlist = () => {
+        setIsAdded(true);
+        // Logic to add product to wishlist goes here
+    };
 
     const product = {
         
@@ -14,6 +22,8 @@ export default function Product({params}){
         category: "Housing" 
   
     }
+
+
  
     return(
         <MainLayout>
@@ -46,8 +56,10 @@ export default function Product({params}){
                                 
                                 <div>
                                     {/*Wishlist Button */}
-                                    <button className="mx-4 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer">
-                                        Wishlist 
+                                    <button  onClick={addToWishlist} 
+                                    className="mx-4 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer"
+                                    disabled={isAdded} >
+                                        {isAdded ? 'Added to Wishlist' : 'Wishlist'} 
                                     </button>
                                 
                                     {/*Message Button */}
