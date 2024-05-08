@@ -9,12 +9,14 @@ export default function Product({params}){
 
     const [product, setProduct] = useState(null);
     const [sellerUsername, setSellerUsername] = useState(null);
+    const [buyerId, setBuyerId] = useState('');
     
     useEffect(() => {
         async function fetchProduct() {
             // Initialize Supabase client
             const supabase = createClientComponentClient();
-
+            const {data: {user}} = await supabase.auth.getUser();
+            setBuyerId(user.id);
             // Fetch product details from Supabase
             const { data: productData, productError } = await supabase
                 .from('productlisting')
@@ -45,26 +47,76 @@ export default function Product({params}){
 
     const handleSendMessage = async () => {
         const supabase = createClientComponentClient();
-        const {data: {user}} = await supabase.auth.getUser();
+        const { data: { user } } = await supabase.auth.getUser();
+    
         try {
-            // Create a conversation between the current user and the seller
-            const { data, error } = await supabase
+            // Check if there is an existing conversation in both directions
+            const { data: existingConversation1, error: conversationError1 } = await supabase
                 .from('conversation')
-                .insert([
-                    {
-                        messenger_id: user.id,
-                        reciever_id: product.user_id,
-                    },
-                ]);
+                .select('*')
+                .eq('messenger_id', user.id)
+                .eq('reciever_id', product.user_id);
+    
+            const { data: existingConversation2, error: conversationError2 } = await supabase
+                .from('conversation')
+                .select('*')
+                .eq('messenger_id', product.user_id)
+                .eq('reciever_id', user.id);
+            
+            const {data: allUserConversations, error: allUserConversationsError } = await supabase
+                .from('conversation')
+                .select('*')
+                .or(`messenger_id.eq.${user.id},reciever_id.eq.${user.id}`);
 
-            if (error) {
-                throw new Error(error.message);
+            if (allUserConversationsError) {
+                throw new Error(allUserConversationsError?.message);
+            }
+            if (conversationError1 || conversationError2) {
+                throw new Error(conversationError1?.message || conversationError2?.message);
+            }
+    
+            if (existingConversation1.length > 0) {
+                // Direct the user to the existing conversation
+                console.log(existingConversation1);
+                console.log('Existing conversation:', existingConversation1);
+                let index = 0;
+                for (let i = 0; i < allUserConversations.length; i++) {
+                    if (existingConversation1[0].id === allUserConversations[i].id) {
+                        index = i;
+                    }
+                }
+                window.location.href = '../messages?index=' + index;
+            } else if (existingConversation2.length > 0) {
+                console.log('Existing conversation:', existingConversation2);
+                let index = 0;
+                for (let i = 0; i < allUserConversations.length; i++) {
+                    if (existingConversation2[0].id === allUserConversations[i].id) {
+                        break;
+                    } else {
+                        index++;
+                    }
+                }
+                window.location.href = '../messages?index=' + index;
             } else {
-                console.log('Conversation created successfully:', data);
-                // Handle success
+                // Create a new conversation between the current user and the seller
+                const { data: newConversation, error: newConversationError } = await supabase
+                    .from('conversation')
+                    .insert([
+                        {
+                            messenger_id: user.id,
+                            reciever_id: product.user_id,
+                        },
+                    ]);
+    
+                if (newConversationError) {
+                    throw new Error(newConversationError.message);
+                }
+    
+                console.log('New conversation created:', newConversation);
+                window.location.href = '../messages?index=' + allUserConversations.length;
             }
         } catch (error) {
-            console.error('Error creating conversation:', error.message);
+            console.error('Error handling message:', error.message);
             // Handle error
         }
     };
@@ -99,16 +151,24 @@ export default function Product({params}){
                                 </div>
                                 
                                 <div>
-                                    {/*Wishlist Button */}
-                                    <button className="mx-4 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer">
-                                        Wishlist 
-                                    </button>
-                                
-                                    {/*Message Button */}
-                                    <button className="bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer" onClick={handleSendMessage}>
-                                        Message 
-                                    </button>
-                                </div>
+                {/* Wishlist and Message buttons */}
+                {!buyerId || product?.user_id !== buyerId ? (
+                    <div>
+                        {/* Wishlist Button */}
+                        <button className="mx-4 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer">
+                            Wishlist
+                        </button>
+
+                        {/* Message Button */}
+                        <button
+                            className="bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer"
+                            onClick={handleSendMessage}
+                        >
+                            Message
+                        </button>
+                    </div>
+                ) : null}
+            </div>
                             </div>
                         </div>
 

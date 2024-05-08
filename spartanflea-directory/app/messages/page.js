@@ -3,31 +3,23 @@ import MainLayout from "../layouts/MainLayout";
 import { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { useRouter } from 'next/navigation';
 
 export default function Message() {
-    const initialConversations = [
-        {
-            sender: 'John Doe',
-            messages: [
-                { id: 1, content: 'Hey, how are you?' },
-                { id: 3, content: 'I\'m doing well too, thanks for asking!' }
-            ]
-        },
-        {
-            sender: 'Jane Doe',
-            messages: [
-                { id: 2, content: 'Hi! I\'m good, how about you?' }
-            ]
-        }
-    ];
-
     const [conversations, setConversations] = useState([]);
     const [selectedConversationIndex, setSelectedConversationIndex] = useState(0);
     const [replyContent, setReplyContent] = useState('');
     const [messages, setMessages] = useState([]);
     const [userid, setUserid] = useState('');
 
-
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const indexFromUrl = parseInt(urlParams.get('index'));
+        if (!isNaN(indexFromUrl)) {
+            setSelectedConversationIndex(indexFromUrl);
+        }
+    }, []);
+    
     useEffect(() => {
         const fetchData = async () => {
             await fetchConversations();
