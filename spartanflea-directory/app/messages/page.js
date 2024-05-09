@@ -19,7 +19,7 @@ export default function Message() {
             setSelectedConversationIndex(indexFromUrl);
         }
     }, []);
-    
+
     useEffect(() => {
         const fetchData = async () => {
             await fetchConversations();
@@ -120,7 +120,7 @@ export default function Message() {
                     <div className="divide-y divide-gray-300">
                         {conversations.map((conversation, index) => (
                             <div key={index} className={`p-4 cursor-pointer ${selectedConversationIndex === index ? 'bg-gray-500 text-white' : ''}`} onClick={() => handleConversationClick(index)}>
-                                <h2 className="text-lg font-semibold">{conversation.reciever_id}</h2>
+                                 <h2 className="text-lg font-semibold">{conversation.reciever_id !== userid ? conversation.rusername : conversation.musername}</h2>
                             </div>
                         ))}
                     </div>

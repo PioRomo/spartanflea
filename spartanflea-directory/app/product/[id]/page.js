@@ -99,12 +99,25 @@ export default function Product({params}){
                 window.location.href = '../messages?index=' + index;
             } else {
                 // Create a new conversation between the current user and the seller
+                const { data: messenger_username} = await supabase
+                    .from('profile')
+                    .select('username')
+                    .eq('id', user.id)
+                console.log(messenger_username);
+                const { data: reciever_username} = await supabase 
+                    .from('profile')
+                    .select('username')
+                    .eq('id', product.user_id)
+    
+
                 const { data: newConversation, error: newConversationError } = await supabase
                     .from('conversation')
                     .insert([
                         {
                             messenger_id: user.id,
                             reciever_id: product.user_id,
+                            musername: messenger_username[0].username,
+                            rusername: reciever_username[0].username
                         },
                     ]);
     
