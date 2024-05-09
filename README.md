@@ -2,12 +2,11 @@
 CMPE 133 Project
 
 How to run the project:
-1. Create a new folder on your computer and create a new project
-2. Clone the repository above into the new project
-3. Open the terminal
-4. Run the 'cd' command until you reach the 'spartanflea-directory' directory
-5. Copy into terminal: npm i @prisma/client @stripe/stripe-js @supabase/auth-helpers-nextjs @supabase/auth-helpers-react @supabase/auth-ui-react @supabase/auth-ui-shared @supabase/supabase-js debounce moment react-icons react-responsive-carousel react-toastify stripe prisma
-6. Run: npm run dev 
-7. Copy and paste the (http://localhost:3000/) link that is provided in the terminal into your browser and hit enter 
-8. Run SpartanFlea on local computer 
+1. Open your terminal, navigate to your preferred directory and past the following: ```git clone https://github.com/PioRomo/spartanflea.git```
+2. Cd into the proper directory with ```cd spartanflea-directory```
+3. Copy into terminal:
+``` npm i @prisma/client @stripe/stripe-js @supabase/auth-helpers-nextjs @supabase/auth-helpers-react @supabase/auth-ui-react @supabase/auth-ui-shared @supabase/supabase-js debounce moment react-icons react-responsive-carousel react-toastify stripe prisma```
+5. Run: ```npm run dev ```
+6. Copy and paste the (http://localhost:3000/) link that is provided in the terminal into your browser and hit enter 
+7. Run SpartanFlea on local computer 
 
