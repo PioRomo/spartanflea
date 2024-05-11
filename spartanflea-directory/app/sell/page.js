@@ -17,9 +17,17 @@ export default function Sell(){
             alert('Please fill in all fields');
             return;
         }
-        const priceRegex = /^\d+(\.\d{2})?$/;
+        const priceRegex = /^\d+(\.\d{1,2})?$/;
         if (!priceRegex.test(price.toString())) {
-            alert('Price must be in the correct format. Please enter either an integer or exactly two digits after the decimal point.');
+            alert('Price must be in the correct format. Please enter either an integer or two digits after the decimal point.');
+            return;
+        }
+        if (title.length > 70) {
+            alert('Title can not exceed 70 characters.');
+            return;
+        }
+        if (description.length > 1000) {
+            alert('Description can not exceed 1000 characters');
             return;
         }
         const {data: {user}} = await supabase.auth.getUser();
