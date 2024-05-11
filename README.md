@@ -11,5 +11,7 @@ How to run the project:
 7. Run SpartanFlea on local computer 
 
 *Note - if you try to access the home pagee without being logged in, you will be prompted to log in. If you don't want to go through 2 factor authentication for registering an account, you can use the following account that is already registered in the database:
+
 email: john.doe@sjsu.edu
+
 password: password123
