@@ -4,7 +4,7 @@ export default function ListItem({ product }) {
     
   return ( 
     <div className="ml-4 relative flex justify-start my-2 border w-full p-6">
-      <img src={product?.url +'/150'} className="rounded-md w-[150px] h-[150px]"/>
+      <img src={product?.image_link +'/150'} className="rounded-md w-[150px] h-[150px]"/>
 
       <div className="overflow-hidden pl-2 w-full">
         <div className="flex items-center justify-between w-full">
@@ -14,7 +14,7 @@ export default function ListItem({ product }) {
           </div>
           {/*Price */}
           <div className="font-bold text-lg">
-            ${(product?.price / 100).toFixed(2)}
+            ${(product?.price).toFixed(2)}
           </div>
         </div>
 

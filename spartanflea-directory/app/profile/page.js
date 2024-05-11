@@ -4,28 +4,111 @@ import Link from "next/link";
 import { PrismaClient } from '@prisma/client';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@supabase/auth-ui-react';
+import { createClient } from '@supabase/supabase-js';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { setConfig } from "next/config";
+import Product from '../components/Product.js';
+
 
 export default function Profile() {
-
     const defaultImageUrl = "https://content.sportslogos.net/logos/34/828/full/san_jose_state_spartans_logo_alternate_20006654.png";
+    const [userId, setUserId] = useState('');
+    const [userData, setUserData] = useState([]);
+    const [products, setProducts] = useState([]);
     const [profile, setProfile] = useState({
         id: 1,
         title: "Flea's Profile",
         description: "Space Holder",
         url: defaultImageUrl,
     });
+    const [bio, setBio] = useState('');
+    const[image, setImage] = useState(defaultImageUrl);
+    useEffect(() => {
+        async function fetchUser() {
+            // Initialize Supabase client
+            const supabase = createClientComponentClient();
+            const {data: {user}} = await supabase.auth.getUser();
+            setUserId(user.id);
+            // Fetch product details from Supabase
+            const { data: userData, userError } = await supabase
+                .from('profile')
+                .select('*')
+                .eq('id', user.id)
+                .single();
 
-    const handleImageUpload = (event) => {
+            if (userError) {
+                console.error('Error fetching user:', error.message);
+            } else {
+                setUserData(userData);
+                const { data: productData, error: productError } = await supabase
+                    .from('productlisting')
+                    .select('*')
+                    .eq("user_id", user.id)
+                if (productError) {
+                    console.error("Error fetching products", error.message)
+                } else {
+                    setProducts(productData);
+                }
+            }
+        }
+
+        fetchUser();
+    }, []);
+
+    const handleImageUpload = async (event) => {
         const file = event.target.files[0];
         if (file) {
             const imageUrl = URL.createObjectURL(file);
-            setProfile((prevProfile) => ({
-                ...prevProfile,
-                url: imageUrl,
-            }));
+            console.log(imageUrl);
+            setImage(imageUrl);
+            const  supabase = createClientComponentClient();
+            const { data, error } = await supabase.storage.from('listing-images').upload('profile-images/' + imageUrl, file, { contentType: file.type});
+            if (error) {
+                console.error('Error uploading image:', error.message);
+                return;
+            }
+            if (!error) {
+                const { error: updateError } = await supabase
+                    .from('profile')
+                    .update([
+                        { profilepic: imageUrl }
+                    ])
+                    .eq('id', userId);
+    
+                if (updateError) {
+                    console.error('Error updating profile picture URL:', updateError.message);
+                    return;
+                } else {
+                    console.log('Profile picture URL updated successfully!');
+                    window.location.reload()
+                }
+            }
         }
     };
 
+    const handleChange = (event) => {
+        setBio(event.target.value);
+    };
+
+    const handleBioUpdate = async () => {
+        try {
+            const supabase = createClientComponentClient();
+            const { data: updatedProfile, error } = await supabase
+                .from('profile')
+                .update({ bio })
+                .eq('id', userId);
+
+            if (error) {
+                console.error('Error updating bio:', error.message);
+            } else {
+                console.log('Bio updated successfully');
+                setUserData(updatedProfile);
+            }
+        } catch (error) {
+            console.error('Error updating bio:', error.message);
+        }
+    };
+    
     console.log(defaultImageUrl);
 
     return (
@@ -34,11 +117,12 @@ export default function Profile() {
                 {/* Left Column */}
                 <div className="w-1/3">
                     <div className="px-4 mb-4 mt-10">
-                        <div className="text-center font-bold text-xl">{profile?.title}</div>
+                        <div className="text-center font-bold text-xl">{userData.username}'s profile</div>
+            
                     </div>
                     <img
                         className="w-56 h-56 rounded-full ml-4" 
-                        src={profile?.url}
+                        src={'https://ckjvjcjjzomgzucvmjpc.supabase.co/storage/v1/object/public/listing-images/profile-images/' + userData?.profilepic}
                         alt={profile?.title}
                     />
                     <div className="text-center mt-12 text-sm bg-blue-600 rounded-full pt-1 pb-1 text-white cursor-pointer relative">
@@ -51,7 +135,25 @@ export default function Profile() {
                             id="profile-picture-input"
                         />
                     </div>
-                    
+                    <div className="mt-4 mb-12 mr-4 ml-8">
+                        <div className="bg-gray-200 rounded-lg p-2 overflow-auto max-h-200">
+                            <div className="pt-3">
+                                <div className="font-bold pb-1">About Me:</div>
+                                <div className="font-semibold text-sm text-left">{userData?.bio}</div>
+                                {/* Form to edit bio */}
+                                    <form onSubmit={handleBioUpdate}>
+                                        <label htmlFor="bio">Edit Bio:</label>
+                                        <textarea
+                                            id="bio"
+                                            name="bio"
+                                            value={bio}
+                                            onChange={handleChange}
+                                        />
+                                        <button type="submit">Save</button>
+                                    </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -59,29 +161,17 @@ export default function Profile() {
                 <div className="w-1/3 mt-10">
                     
 
+                  
+
                     <div className="mt-4 mb-12 mr-4 ml-8">
                         <div className="bg-gray-200 rounded-lg p-2 overflow-auto max-h-200">
                             <div className="pt-3">
                                 <div className="font-semibold pb-1">Items Listed:</div>
-                                <div className="font-bold text-sm text-right">{profile?.description}</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="mt-4 mb-12 mr-4 ml-8">
-                        <div className="bg-gray-200 rounded-lg p-2 overflow-auto max-h-200">
-                            <div className="pt-3">
-                                <div className="font-semibold pb-1">Items Wishlisted:</div>
-                                <div className="font-bold text-sm text-right">{profile?.description}</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="mt-4 mb-12 mr-4 ml-8">
-                        <div className="bg-gray-200 rounded-lg p-2 overflow-auto max-h-200">
-                            <div className="pt-3">
-                                <div className="font-semibold pb-1">Conversations:</div>
-                                <div className="font-bold text-sm text-right">{profile?.description}</div>
+                                <div className="grid grid-rows gap-4">
+                                    {products.map(product => (
+                                    <Product key={product.listingid} product={product} />
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>

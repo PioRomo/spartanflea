@@ -10,6 +10,7 @@ export default function Product({params}){
     const [product, setProduct] = useState(null);
     const [sellerUsername, setSellerUsername] = useState(null);
     const [buyerId, setBuyerId] = useState('');
+    const [isWishlisted, setIsWishlisted] = useState(false);
     
     useEffect(() => {
         async function fetchProduct() {
@@ -38,6 +39,16 @@ export default function Product({params}){
                     console.error('Error fetching seller:', sellerError.message);
                 } else {
                     setSellerUsername(sellerData.username);
+                    const { data: wishlistData, error: wishlistError } = await supabase
+                        .from('wishlist')
+                        .select('*')
+                        .eq('userid', user.id)
+                        .eq('productid', productData.listingid);
+                    if (wishlistError) {
+                        console.error('Error checking wishlist:', wishlistError.message);
+                    } else {
+                        setIsWishlisted(wishlistData && wishlistData.length > 0);
+                    }
                 }
             }
         }
@@ -134,6 +145,84 @@ export default function Product({params}){
         }
     };
 
+    const handleRemoveListing = async () => {
+        try {
+            const supabase = createClientComponentClient();
+            const { data: { user } } = await supabase.auth.getUser();
+    
+            // Call Supabase to remove the listing
+            const { error } = await supabase
+                .from('productlisting')
+                .delete()
+                .eq('user_id', user.id)
+                .eq('listingid', product.listingid);
+    
+            if (error) {
+                console.error('Error removing listing:', error.message);
+                // Handle error (e.g., show a message to the user)
+            } else {
+                console.log('Listing removed successfully');
+                // Handle success (e.g., redirect to a different page)
+                window.location.href = '/';
+            }
+        } catch (error) {
+            console.error('Error removing listing:', error.message);
+            // Handle error (e.g., show a message to the user)
+        }
+    };
+
+    const handleWishlist = async () => {
+        try {
+            const supabase = createClientComponentClient();
+            const { data: { user } } = await supabase.auth.getUser();
+    
+            // Call Supabase to remove the listing
+            const { error } = await supabase
+                .from('wishlist')
+                .insert([
+                    {
+                        userid: user.id,
+                        productid: product.listingid,
+                    },
+                ]);   
+            if (error) {
+                console.error('Error adding item to wishlist:', error.message);
+                // Handle error (e.g., show a message to the user)
+            } else {
+                console.log('Item added to wishlist');
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Error adding to wishlist:', error.message);
+            // Handle error (e.g., show a message to the user)
+        }
+    }
+
+    const handleRemoveFromWishlist = async () => {
+        try {
+            const supabase = createClientComponentClient();
+            const { data: { user } } = await supabase.auth.getUser();
+    
+            // Call Supabase to remove the listing
+            const { error } = await supabase
+                .from('wishlist')
+                .delete()
+                .eq('userid', user.id)
+                .eq('productid', product.listingid);
+
+            if (error) {
+                console.error('Error removing item to wishlist:', error.message);
+                // Handle error (e.g., show a message to the user)
+            } else {
+                console.log('Item removed wishlist');
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Error adding to wishlist:', error.message);
+            // Handle error (e.g., show a message to the user)
+        }
+    }
+
     return(
         <MainLayout>
 
@@ -157,7 +246,7 @@ export default function Product({params}){
                                     Price: 
                                     {product?.price
                                         ? <div className="font-bold text-[20px] ml-2">
-                                            ${product.price}
+                                            ${(product?.price).toFixed(2)}
                                         </div>
                                         : null
                                     }
@@ -167,21 +256,34 @@ export default function Product({params}){
                 {/* Wishlist and Message buttons */}
                 {!buyerId || product?.user_id !== buyerId ? (
                     <div>
-                        {/* Wishlist Button */}
-                        <button className="mx-4 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer">
-                            Wishlist
+                    {/* Wishlist Button */}
+                    {isWishlisted ? (
+                        <button className="mx-4 bg-red-500 text-white py-2 px-10 rounded-full cursor-pointer" onClick={handleRemoveFromWishlist}>
+                            Remove from Wishlist
                         </button>
-
-                        {/* Message Button */}
+                    ) : (
+                        <button className="mx-4 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer" onClick={handleWishlist}>
+                            Add to Wishlist
+                        </button>
+                    )}
+    
+                    {/* Message Button */}
+                    <button className="bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer" onClick={handleSendMessage}>
+                        Message
+                    </button>
+                </div>
+                ) : (
+                    <div>
+                        {/* Remove Listing Button */}
                         <button
-                            className="bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer"
-                            onClick={handleSendMessage}
+                            className="mx-4 bg-red-500 text-white py-2 px-10 rounded-full cursor-pointer"
+                            onClick={handleRemoveListing}
                         >
-                            Message
+                            Remove Listing
                         </button>
                     </div>
-                ) : null}
-            </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
 
@@ -205,7 +307,6 @@ export default function Product({params}){
                     </div>
                 </div>
             </div>
-            <SimilarProducts />
 
         </MainLayout>
     );
