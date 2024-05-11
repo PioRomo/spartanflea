@@ -22,7 +22,7 @@ export default function Profile() {
         url: defaultImageUrl,
     });
     const [bio, setBio] = useState('');
-    const[image, setImage] = useState(defaultImageUrl);
+    const[image, setImage] = useState('blob:http:/localhost:3000/san_jose_state_spartans_logo_alternate_20006654.png');
     useEffect(() => {
         async function fetchUser() {
             // Initialize Supabase client
@@ -40,6 +40,9 @@ export default function Profile() {
                 console.error('Error fetching user:', error.message);
             } else {
                 setUserData(userData);
+                console.log(userData.profilepic);
+                setImage(userData.profilepic);
+                console.log(image);
                 const { data: productData, error: productError } = await supabase
                     .from('productlisting')
                     .select('*')
@@ -109,7 +112,6 @@ export default function Profile() {
         }
     };
     
-    console.log(defaultImageUrl);
 
     return (
         <MainLayout>
@@ -118,12 +120,16 @@ export default function Profile() {
                 <div className="w-1/3">
                     <div className="px-4 mb-4 mt-10">
                         <div className="text-center font-bold text-xl">{userData.username}'s profile</div>
-            
+                        <div className="text-center text-sm">{userData.email}</div>
                     </div>
                     <img
                         className="w-56 h-56 rounded-full ml-4" 
-                        src={'https://ckjvjcjjzomgzucvmjpc.supabase.co/storage/v1/object/public/listing-images/profile-images/' + userData?.profilepic}
-                        alt={profile?.title}
+                        src={image ? 
+                            'https://ckjvjcjjzomgzucvmjpc.supabase.co/storage/v1/object/public/listing-images/profile-images/' + image :
+                            'https://ckjvjcjjzomgzucvmjpc.supabase.co/storage/v1/object/public/listing-images/profile-images/blob:http:/localhost:3000/san_jose_state_spartans_logo_alternate_20006654.png'}
+                        alt={userData?.profilepic ?
+                            'Profile Picture' :
+                            'Default Image'}
                     />
                     <div className="text-center mt-12 text-sm bg-blue-600 rounded-full pt-1 pb-1 text-white cursor-pointer relative">
                         Upload/Change Profile Picture
