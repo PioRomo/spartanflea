@@ -17,6 +17,11 @@ export default function Sell(){
             alert('Please fill in all fields');
             return;
         }
+        const priceRegex = /^\d+(\.\d{2})?$/;
+        if (!priceRegex.test(price.toString())) {
+            alert('Price must be in the correct format. Please enter either an integer or exactly two digits after the decimal point.');
+            return;
+        }
         const {data: {user}} = await supabase.auth.getUser();
         // Upload image to Supabase storage
         const { data, error } = await supabase.storage.from('listing-images').upload('listing-images/' + image.name, image);

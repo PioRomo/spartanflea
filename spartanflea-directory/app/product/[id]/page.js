@@ -4,6 +4,7 @@ import SimilarProducts from "../../components/SimilarProducts";
 import { createClient } from '@supabase/supabase-js';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useState, useEffect } from 'react';
+import Link from "next/link"; 
 
 export default function Product({params}){
 
@@ -268,9 +269,10 @@ export default function Product({params}){
                     )}
     
                     {/* Message Button */}
-                    <button className="bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer" onClick={handleSendMessage}>
+                    <button className="mx-4 bg-blue-500 text-white py-2 px-10 rounded-full cursor-pointer" onClick={handleSendMessage}>
                         Message
                     </button>
+                    
                 </div>
                 ) : (
                     <div>
@@ -302,7 +304,15 @@ export default function Product({params}){
                         </div>
                         <div className="pt-3">
                             <div className="font-semibold pb-1"> Seller: </div>
-                            <div className="text-sm">{sellerUsername}</div>
+                            <div className="text-sm">{sellerUsername}
+                            {!buyerId || product?.user_id !== buyerId ?  (
+                            <Link href={`/externalprofile/${product?.user_id}`} className="mx-10 bg-blue-600 text-white py-2 px-10 rounded-full cursor-pointer inline-flex items-center justify-center">
+                                <button>
+                                    View Profile
+                                </button>
+                            </Link>
+                            ) : null}
+                            </div>      
                         </div>
                     </div>
                 </div>

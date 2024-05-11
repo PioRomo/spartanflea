@@ -95,6 +95,10 @@ export default function Message() {
     const handleReplySubmit = async (e) => {
         e.preventDefault();
         if (replyContent.trim() === '') return;
+        if (replyContent.length > 250) {
+            alert("Messages must not exceed 250 characters.");
+            return; // Content exceeds 250 characters
+        }
         const conversationId = conversations[selectedConversationIndex].id;
         const supabase = createClientComponentClient();
         const {data: {user}} = await supabase.auth.getUser();

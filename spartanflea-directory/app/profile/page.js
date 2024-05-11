@@ -15,14 +15,8 @@ export default function Profile() {
     const [userId, setUserId] = useState('');
     const [userData, setUserData] = useState([]);
     const [products, setProducts] = useState([]);
-    const [profile, setProfile] = useState({
-        id: 1,
-        title: "Flea's Profile",
-        description: "Space Holder",
-        url: defaultImageUrl,
-    });
     const [bio, setBio] = useState('');
-    const[image, setImage] = useState('blob:http:/localhost:3000/san_jose_state_spartans_logo_alternate_20006654.png');
+    const [image, setImage] = useState('blob:http:/localhost:3000/san_jose_state_spartans_logo_alternate_20006654.png');
     useEffect(() => {
         async function fetchUser() {
             // Initialize Supabase client
