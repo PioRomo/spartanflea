@@ -2,6 +2,7 @@
 import MainLayout from "../layouts/MainLayout";
 import SimilarProducts from "../components/SimilarProducts";
 import ListItem from "../components/ListItem";
+
 import { createClient } from '@supabase/supabase-js';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useState, useEffect } from 'react';
@@ -59,6 +60,7 @@ if (wishlistError) {
                 {products.map(product => (
                   <Product key={product.listingid} product={product} />
                 ))}
+
             </div>
           </div>
         </MainLayout>

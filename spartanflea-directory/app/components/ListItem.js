@@ -1,6 +1,6 @@
 'use client';
 
-export default function ListItem({ product }) {
+export default function ListItem({ product, onRemove }) {
     
   return ( 
     <div className="ml-4 relative flex justify-start my-2 border w-full p-6">
@@ -23,16 +23,16 @@ export default function ListItem({ product }) {
           {product?.description.substring(0,150)}...
         </div>
 
-         {/*Remove Item */}
-         <div className="text-sm absolute bottom-6 right-24">
+        {/*Message Button */}
+        <div className="text-sm absolute bottom-6 right-24">
           <button className="p-2 bg-blue-500 rounded-full text-white">
             Message
           </button>
         </div>
 
-        {/*Remove Item */}
+        {/*Remove Button */}
         <div className="absolute right-4 bottom-6 text-sm">
-          <button className="p-2 bg-red-500 rounded-full text-white">
+          <button onClick={onRemove} className="p-2 bg-red-500 rounded-full text-white">
             Remove
           </button>
         </div>

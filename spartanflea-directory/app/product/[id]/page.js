@@ -285,6 +285,7 @@ export default function Product({params}){
                         </button>
                     </div>
                                     )}
+
                                 </div>
                             </div>
                         </div>
