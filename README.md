@@ -15,3 +15,5 @@ How to run the project:
 email: john.doe@sjsu.edu
 
 password: password123
+
+*Another Note - you may run into some issues if you try to upload the same exact picture as someone else, so make sure you upload unique pictures if you're trying to post listings!
