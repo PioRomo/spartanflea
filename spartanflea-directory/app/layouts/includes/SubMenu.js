@@ -4,14 +4,14 @@ export default function SubMenu(){
     {/* Categories */}
     const menuItems = [
         { id: 1, name: 'Home', link: '/' },
-        { id: 2, name: 'Saved', link: '/saved' },
-        { id: 3, name: 'Housing', link: '/housing' },
-        { id: 4, name: 'Electronics', link: '/electronics' },
-        { id: 5, name: 'Furniture', link: '/furniture' },
-        { id: 6, name: 'Fashion', link: '/fashion' },
-        { id: 7, name: 'Collectables and Art', link: '/collectables' },
-        { id: 8, name: 'Sports', link: '/sports' },
-        { id: 9, name: 'Miscellaneous', link: '/miscellaneous' },
+        { id: 2, name: 'Saved', link: '/wishlist' },
+        { id: 3, name: 'Housing', link: '/categories/housing' },
+        { id: 4, name: 'Electronics', link: '/categories/electronics' },
+        { id: 5, name: 'Furniture', link: '/categories/furniture' },
+        { id: 6, name: 'Fashion', link: '/categories/fashion' },
+        { id: 7, name: 'Collectables and Art', link: '/categories/collectables' },
+        { id: 8, name: 'Sports', link: '/categories/sports' },
+        { id: 9, name: 'Miscellaneous', link: '/categories/miscellaneous' },
         { id: 10, name: 'Sell', link: '/sell' },
     ];
 
