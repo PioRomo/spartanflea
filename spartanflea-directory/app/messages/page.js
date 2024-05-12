@@ -95,8 +95,8 @@ export default function Message() {
     const handleReplySubmit = async (e) => {
         e.preventDefault();
         if (replyContent.trim() === '') return;
-        if (replyContent.length > 250) {
-            alert("Messages must not exceed 250 characters.");
+        if (replyContent.length > 500) {
+            alert("Messages must not exceed 500 characters.");
             return; // Content exceeds 250 characters
         }
         const conversationId = conversations[selectedConversationIndex].id;

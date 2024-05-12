@@ -39,18 +39,27 @@ export default function SearchResults() {
             console.error('Error fetching search results:', error);
         }
     };
-    
-    return (
-        <MainLayout>
+    if (searchResults.length == 0) {
+        return (
+            <MainLayout>
             <div className="max-w-[1200px] mx-auto">
-                <div className="text-2xl font-bold mt-4 mb-6 px-4">Search Results for "{searchTerm}"</div>
-                <div className="grid grid-cols-5 gap-4">
-                    {/* Render search results */}
-                    {searchResults.map(product => (
-                        <Product key={product.id} product={product} />
-                    ))}
-                </div>
+                <div className="text-2xl font-bold mt-4 mb-6 px-4">No Results for "{searchTerm}"</div>
             </div>
         </MainLayout>
-    );
+        )
+    } else {
+        return (
+            <MainLayout>
+                <div className="max-w-[1200px] mx-auto">
+                    <div className="text-2xl font-bold mt-4 mb-6 px-4">Search Results for "{searchTerm}"</div>
+                    <div className="grid grid-cols-5 gap-4">
+                        {/* Render search results */}
+                        {searchResults.map(product => (
+                            <Product key={product.id} product={product} />
+                        ))}
+                    </div>
+                </div>
+            </MainLayout>
+        );
+    }
 }
